@@ -88,6 +88,7 @@ def construir_sprite(template):
         sprite_rgb[template == clave] = color
     return np.kron(sprite_rgb, np.ones(factor, dtype=np.uint8))
 
+
 def intercambiar_colores():
     global a, b, c, d
     a, b = b.copy(), a.copy()
@@ -105,6 +106,11 @@ def generar_frame(paso):
     if col_pesardo >= 0:
         fondo_animado[fila_pesardo:fila_pesardo + alto_pesardo, col_pesardo:col_pesardo + ancho_pesardo] = pesardo_sprite
     return fondo_animado
+
+def preparar_frames():
+    with Pool(processes=cpu_count()) as pool:
+        frames = pool.map(generar_frame, range(N_pasos))
+    return frames
 
 if __name__ == "__main__":
     for i in range(N_pasos):
